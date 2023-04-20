@@ -1,15 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class News(models.Model):
-    title = models.CharField(max_length=255)
-    img_src = models.CharField(max_length=255)
-    url = models.URLField(max_length=255)
-
-    def __str__(self):
-        return self.title
     
-
 
 class Site(models.Model):
     name = models.CharField(max_length=255)
@@ -24,3 +16,11 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
+    
+class News(models.Model):
+    title = models.CharField(max_length=255)
+    img_src = models.CharField(max_length=255)
+    url = models.URLField(max_length=255)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='news')
+    def __str__(self):
+        return self.title
