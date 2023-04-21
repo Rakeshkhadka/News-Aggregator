@@ -19,17 +19,22 @@ def scrape_ekantipur(request):
             titles = article.find_all('h2')
             image_source = article.find_all('img')
             url = article.find_all('a')
+
+            
+            
+        # Create a new News object with the correct category/sport
             for title, img, u in zip(titles, image_source, url):
                 news_title = title.get_text()
                 url = base_url+u['href']
+                
+                category = next((choice[0] for choice in News.CATEGORY_CHOICES if choice[1] == path_.replace('/', '').title()), 'others')
                 img_url = ""
                 try:
                     img_url =  img['data-src']
                 except:
                     pass 
                 if not News.objects.filter(title__icontains=news_title).exists():
-                
-                    News.objects.create(title=news_title, img_src=img_url, url=url)
+                    News.objects.create(title=news_title, img_src=img_url, url=url, category=category)
     
     return HttpResponse("hello")
 
