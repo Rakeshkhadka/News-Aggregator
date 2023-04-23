@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'celery',
+    'django_celery_beat',
 
 
     #my_applicatio
@@ -126,3 +128,27 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_APP_NAME = 'newsproject'
+CELERY_IMPORTS = ['scraper.tasks']
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# Celery beat schedule
+CELERY_BEAT_SCHEDULE = {
+    'scrape_ekantipur': {
+        'task': 'scraper.tasks.scrape_ekantipur',
+        'schedule': 120.0,  # Run every 2 minutes
+    },
+    # 'scrape_nagarik': {
+    #     'task': 'scraper.tasks.scrape_nagarik',
+    #     'schedule': 120.0,  # Run every 2 minutes
+    # },
+}

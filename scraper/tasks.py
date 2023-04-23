@@ -1,12 +1,46 @@
-from django.shortcuts import render
 import requests
 from bs4 import BeautifulSoup
 from django.http import HttpResponse 
 from .models import News
 
-# Create your views here.
 
-def scrape_nagarik(request):
+from celery import shared_task
+
+
+@shared_task
+def scrape_ekantipur():
+    base_url = "https://ekantipur.com"
+    paths = ["/sports", "/national", "/world", "/entertainment"]
+    for path_ in paths:
+        response = requests.get(base_url+path_, verify=False)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        news = soup.find_all('article', {'class':'normal'})
+    
+
+        for article in news:
+            titles = article.find_all('h2')
+            image_source = article.find_all('img')
+            url = article.find_all('a')
+
+            
+            
+        # Create a new News object with the correct category/sport
+            for title, img, u in zip(titles, image_source, url):
+                news_title = title.get_text()
+                url = base_url+u['href']
+                
+                category = next((choice[0] for choice in News.CATEGORY_CHOICES if choice[1] == path_.replace('/', '').title()), 'others')
+                img_url = ""
+                try:
+                    img_url =  img['data-src']
+                except:
+                    pass 
+                if not News.objects.filter(title__icontains=news_title).exists():
+                    News.objects.create(title=news_title, img_src=img_url, url=url, category=category)
+    
+    return "ekantipur scraped"
+
+def scrape_nagarik():
     base_url = "https://nagariknews.nagariknetwork.com"
     paths = [ "/politics", "/economy", "/arts", "/sports"]
     for paths_ in paths:
@@ -31,24 +65,4 @@ def scrape_nagarik(request):
                 nurl = base_url + url['href']
                 if not News.objects.filter(title__icontains=news_title).exists():
                     News.objects.create(title=news_title, img_src=img_url, url=nurl, category=category)
-    return HttpResponse("hello")        
-    
-    
-    
-def index(request):
-    news = News.objects.all()
-    categories = News.CATEGORY_CHOICES
-    context = {
-        'news': news,
-        'categories':categories
-    }
-    return render(request, 'index.html', context)
-
-def index_by_category(request, category):
-    categories = News.CATEGORY_CHOICES
-    news = News.objects.filter(category=category)
-    context = {
-        'news': news,
-        'categories':categories,     
-               }
-    return render(request, 'index.html', context)
+    return "Nagirk news scraped"     
