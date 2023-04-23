@@ -7,10 +7,12 @@ from django.db import models
 class News(models.Model):
     CATEGORY_CHOICES = [
         ('sports', 'Sports'),
-        ('video', 'Video'),
         ('national', 'National'),
         ('world', 'World'),
         ('entertainment', 'Entertainment'),
+        ('politics', 'Politics'),
+        ('economy', 'Economy'),
+        ('arts', 'Arts'),
     ]
     title = models.CharField(max_length=255)
     img_src = models.URLField(max_length=255)
