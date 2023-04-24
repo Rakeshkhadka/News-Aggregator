@@ -31,12 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #third party package
     'django_extensions',
     'celery',
     'django_celery_beat',
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
 
     #my_applicatio
     'scraper',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -147,8 +150,8 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'scraper.tasks.scrape_ekantipur',
         'schedule': 120.0,  # Run every 2 minutes
     },
-    # 'scrape_nagarik': {
-    #     'task': 'scraper.tasks.scrape_nagarik',
-    #     'schedule': 120.0,  # Run every 2 minutes
-    # },
+    'scrape_nagarik': {
+        'task': 'scraper.tasks.scrape_nagarik',
+        'schedule': 120.0,  # Run every 2 minutes
+    },
 }

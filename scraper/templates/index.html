@@ -16,8 +16,11 @@
     </ul>
 
     {% for new in news %}
-    <h1>{{new.title}}</h1>
-    <br />
+    <a href="{{new.url}}">
+        <img src="{{new.img_src}}" alt="">
+        <h1>{{new.title}} </h1>
+    </a>
+        <br>
     {% endfor %}
   </body>
 </html>

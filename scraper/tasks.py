@@ -40,6 +40,7 @@ def scrape_ekantipur():
     
     return "ekantipur scraped"
 
+@shared_task
 def scrape_nagarik():
     base_url = "https://nagariknews.nagariknetwork.com"
     paths = [ "/politics", "/economy", "/arts", "/sports"]

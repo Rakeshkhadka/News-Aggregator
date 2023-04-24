@@ -20,3 +20,12 @@ class News(models.Model):
     category = models.CharField(max_length=255, choices=CATEGORY_CHOICES)
     def __str__(self):
         return self.title
+    
+
+
+
+class randomclas(models.Model):
+    name = models.CharField(max_length=4)
+
+    def __str__(self):
+        return self.name
