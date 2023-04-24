@@ -42,11 +42,11 @@ INSTALLED_APPS = [
     'django_extensions',
     'celery',
     'django_celery_beat',
+    'bootstrap5',
 
 
     #my_applicatio
     'scraper',
-    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'scraper.context_processor.categories',
             ],
         },
     },

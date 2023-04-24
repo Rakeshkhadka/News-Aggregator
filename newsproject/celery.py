@@ -15,9 +15,13 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 
 app.conf.beat_schedule = {
-    'get_joke_3s':{
-        'task':'jokes.tasks.get_joke',
-        'schedule': 6.0
+    'scrape_ekantipur_120s':{
+        'task':'scraper.tasks.scrape_ekantipur',
+        'schedule': 120.0
+    },
+    'scrape_nagarik_120s':{
+        'task':'scraper.tasks.scrape_nagarik',
+        'schedule': 120.0
     }
 }
 

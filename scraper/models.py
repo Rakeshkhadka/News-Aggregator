@@ -13,6 +13,7 @@ class News(models.Model):
         ('politics', 'Politics'),
         ('economy', 'Economy'),
         ('arts', 'Arts'),
+        ('others', 'Others'),
     ]
     title = models.CharField(max_length=255)
     img_src = models.URLField(max_length=255)

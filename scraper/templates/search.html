@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <h1>Search Results for "{{ query }}"</h1>
+      {% for new in news %}
+      <div class="col-4">
+        <div class="card" style="width: 18rem;">
+          <a href="{{new.url}}">
+            <img src="{{new.img_src}}" class="card-img-top" alt="{{new.title}}">
+          </a>
+            <div class="card-body">
+              <h5 class="card-title">{{new.title}} </h5>
+              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+              <a href="{{new.url}}" class="btn btn-primary">Read More</a>
+            </div>
+          
+        </div>
+      </div>
+      {% empty %}
+    <h1>No articles found</h1>
+      {% endfor %}
+      <br>
+    </div>
+  </div>
+{% endblock %}
