@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import News
 
 
@@ -26,4 +26,45 @@ def search(request):
     else:
         news = News.objects.all()  # if no query, return all News objects
     context = {'news': news, 'query': query}  # pass the query and search results to the template
-    return render(request, 'search.html', context)
+    return render(request, 'search.html', context) 
+
+
+from .forms import UserForm
+def registerUser(request):
+    form = UserForm()
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+    
+    
+    context = {
+        'form':form
+    }
+    return render(request, 'register.html', context)
+
+
+from django.contrib.auth import authenticate, login, logout
+def loginUser(request):
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password') 
+        user = authenticate(request, username=username, password=password) 
+        if user is not None:
+            login(request, user)  
+            return redirect('home')
+        else:
+            return redirect('login')
+    context = {
+        
+    }
+    return render(request, 'login.html', context)
+
+
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
+        
