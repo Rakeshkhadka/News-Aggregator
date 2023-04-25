@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         <h1>Search Results for "{{ query }}"</h1>
-      {% for new in news %}
+      {% for new in page_obj %}
       <div class="col-4">
         <div class="card" style="width: 18rem;">
           <a href="{{new.url}}">
@@ -26,4 +26,5 @@
       <br>
     </div>
   </div>
+  
 {% endblock %}

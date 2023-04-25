@@ -1,11 +1,19 @@
 from django.shortcuts import render, redirect
 from .models import News
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
-
+@login_required(login_url="/login/")
 def index(request):
+    
     news = News.objects.all()
+    paginator = Paginator(news, 9)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'news': news,
+        'page_obj': page_obj
     }
     return render(request, 'index.html', context)
 
@@ -20,12 +28,17 @@ def index_by_category(request, category):
 
 
 def search(request):
-    query = request.GET.get('query')  # get the search query from the GET parameters
+    query = request.GET.get('query') 
     if query:
-        news = News.objects.filter(title__icontains=query)  # search the News model for the query in the title field
+        news = News.objects.filter(title__icontains=query)  
     else:
-        news = News.objects.all()  # if no query, return all News objects
-    context = {'news': news, 'query': query}  # pass the query and search results to the template
+        news = News.objects.all()  
+    paginator = Paginator(news, 9)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {'page_obj': page_obj, 'query': query}  
     return render(request, 'search.html', context) 
 
 
@@ -67,4 +80,3 @@ def loginUser(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
-        

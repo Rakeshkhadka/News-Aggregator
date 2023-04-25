@@ -56,7 +56,7 @@ def scrape_nagarik():
             # url = base_url+info['href']
             my_dict['url'] = base_url+info['href']
             # image_url = info.find('img')['data-src']
-            my_dict['img_src'] = base_url+info['href']
+            my_dict['img_src'] = info.find('img')['data-src']
             title = info['title']
             my_dict['title']=title
             my_dict['category'] = path_ if path_ in categories else "others"
