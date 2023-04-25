@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'celery',
     'django_celery_beat',
     'bootstrap5',
+    'crispy_forms',
 
 
     #my_applicatio
@@ -90,6 +91,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 # Password validation

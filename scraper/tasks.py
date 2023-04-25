@@ -32,7 +32,7 @@ def scrape_ekantipur():
             title=article.find('h2').get_text()
             my_dict['title'] = title
             my_dict['url'] = base_url+article.find('a')['href']
-            my_dict['img_source'] = article.find('figure').find('img')['data-src']
+            my_dict['img_src'] = article.find('figure').find('img')['data-src']
             if path_ in categories:
                 category = path_
             else:
@@ -56,7 +56,7 @@ def scrape_nagarik():
             # url = base_url+info['href']
             my_dict['url'] = base_url+info['href']
             # image_url = info.find('img')['data-src']
-            my_dict['image_url'] = base_url+info['href']
+            my_dict['img_src'] = base_url+info['href']
             title = info['title']
             my_dict['title']=title
             my_dict['category'] = path_ if path_ in categories else "others"
