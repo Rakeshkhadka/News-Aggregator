@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import News
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 @login_required(login_url="/login/")
 def index(request):
@@ -16,13 +17,16 @@ def index(request):
         'page_obj': page_obj
     }
     return render(request, 'index.html', context)
-
+@login_required(login_url="/login/")
 def index_by_category(request, category):
-    categories = News.CATEGORY_CHOICES
+    # categories = News.CATEGORY_CHOICES
     news = News.objects.filter(category=category)
+    paginator = Paginator(news, 9)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'news': news,
-        'categories':categories,     
+        'page_obj': page_obj,    
                }
     return render(request, 'index.html', context)
 
@@ -30,7 +34,7 @@ def index_by_category(request, category):
 def search(request):
     query = request.GET.get('query') 
     if query:
-        news = News.objects.filter(title__icontains=query)  
+        news = News.objects.filter(Q(title__icontains=query) | Q(category=query))  
     else:
         news = News.objects.all()  
     paginator = Paginator(news, 9)
@@ -51,7 +55,7 @@ def registerUser(request):
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
-    
+            return redirect("login")
     
     context = {
         'form':form
@@ -65,12 +69,12 @@ def loginUser(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password') 
-        user = authenticate(request, username=username, password=password) 
-        if user is not None:
-            login(request, user)  
-            return redirect('home')
-        else:
+        user = authenticate(request, username=username, password=password)
+        if not user:
             return redirect('login')
+        login(request, user)  
+        return redirect('home')
+            
     context = {
         
     }

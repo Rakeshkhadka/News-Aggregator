@@ -66,5 +66,5 @@ def scrape_nagarik():
             #     category = "others"
             # my_dict = {'title':title, 'img_src':image_url, 'url':url, 'category':category}
             if not News.objects.filter(title=title).exists():
-                    News.objects.create(**my_dict)
+                News.objects.create(**my_dict)
     return "Nagirk news scraped"
